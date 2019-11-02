@@ -4,12 +4,17 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flake8 = "*"
+rope = "*"
+yapf = "*"
 
 [packages]
 numpy = "*"
 pandas = "*"
 jupyterlab = "*"
 scikit-learn = "*"
+lightgbm = "*"
+bqplot = "*"
 
 [requires]
 python_version = "3.7"
