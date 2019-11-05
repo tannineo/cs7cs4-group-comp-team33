@@ -15,6 +15,7 @@ jupyterlab = "*"
 scikit-learn = "*"
 lightgbm = "*"
 bqplot = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"
