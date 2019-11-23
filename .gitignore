@@ -9,6 +9,7 @@ Pipfile.lock
 *.csv
 !2019_11_23__17_02_08.csv
 !2019_11_23__18_58_26.csv
+!2019_11_23__20_24_12.csv
 
 # do contain the submitted result
 !sub19*_*.csv
