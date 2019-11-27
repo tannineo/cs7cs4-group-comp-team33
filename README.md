@@ -8,6 +8,11 @@ Group Competition CS7CS4
 - use `jupyter lab` to edit notebooks
   - jupyter lab plugins: [bqplot](https://github.com/bloomberg/bqplot)
 
+## Non-ASCII processing for lightgbm
+regex: `[^\x00-\x7f]`
+
+[^\x00-\x7f]
+
 ## authors
 
 [Mary McDonald](https://github.com/mcdonam7)
