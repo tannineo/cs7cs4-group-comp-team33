@@ -324,30 +324,30 @@ total_df.columns
 ########################################### End with SoC
 
 ########################################### Start with Height
-total_df['Height'].value_counts().sort_index()
+# total_df['Height'].value_counts().sort_index()
 
-# plot height
-total_df[(total_df['Income'] != 0)].sample(
-    frac=0.01, random_state=None).plot.scatter(x='Height', y='Income')
+# # plot height
+# total_df[(total_df['Income'] != 0)].sample(
+#     frac=0.01, random_state=None).plot.scatter(x='Height', y='Income')
 
-# freq encoding
-fq_encode = total_df['Height'].value_counts(normalize=True).to_dict()
-total_df['Height_F'] = total_df['Height'].map(fq_encode).astype('float32')
+# # freq encoding
+# fq_encode = total_df['Height'].value_counts(normalize=True).to_dict()
+# total_df['Height_F'] = total_df['Height'].map(fq_encode).astype('float32')
 
-# box-cos transform
-PT = PowerTransformer(method='box-cox', standardize=True)
-total_df['Height_T'] = PT.fit_transform(total_df[['Height']])
+# # box-cos transform
+# PT = PowerTransformer(method='box-cox', standardize=True)
+# total_df['Height_T'] = PT.fit_transform(total_df[['Height']])
 
-# perform a inverse
-total_df['Height_T'] = total_df['Height_T'].map(lambda h: np.abs(h)).astype(
-    'float32')
+# # perform a inverse
+# total_df['Height_T'] = total_df['Height_T'].map(lambda h: np.abs(h)).astype(
+#     'float32')
 
-total_df['Height'] = total_df['Height'].astype('int16')
+# total_df['Height'] = total_df['Height'].astype('int16')
 
-total_df[(total_df['Income'] != 0)].sample(
-    frac=0.01, random_state=None).plot.scatter(x='Height_T', y='Income')
+# total_df[(total_df['Income'] != 0)].sample(
+#     frac=0.01, random_state=None).plot.scatter(x='Height_T', y='Income')
 
-total_df.columns
+# total_df.columns
 ########################################### End with Height
 
 ########################################### Start with AddIn
@@ -514,47 +514,47 @@ total_df.drop('UD', axis=1, inplace=True)
 total_df.columns
 ########################################### End with UD
 
-########################################### Start with Glasses
-# count
-total_df['Glasses'].value_counts().sort_index()
+# ########################################### Start with Glasses
+# # count
+# total_df['Glasses'].value_counts().sort_index()
 
-# freq encoding
-fq_encode = total_df['Glasses'].value_counts(normalize=True).to_dict()
-total_df['Glasses_F'] = total_df['Glasses'].map(fq_encode).astype('float32')
+# # freq encoding
+# fq_encode = total_df['Glasses'].value_counts(normalize=True).to_dict()
+# total_df['Glasses_F'] = total_df['Glasses'].map(fq_encode).astype('float32')
 
-# one hot encoding
-dummies = pd.get_dummies(total_df['Glasses'], prefix='GL')
-total_df = total_df.join(dummies)
+# # one hot encoding
+# dummies = pd.get_dummies(total_df['Glasses'], prefix='GL')
+# total_df = total_df.join(dummies)
 
-# drop the original column
-total_df.drop('Glasses', axis=1, inplace=True)
+# # drop the original column
+# total_df.drop('Glasses', axis=1, inplace=True)
 
-total_df.columns
-########################################### End with UD
+# total_df.columns
+# ########################################### End with UD
 
-########################################### Start with Hair
-# count
-total_df['Hair'].value_counts().sort_index()
+# ########################################### Start with Hair
+# # count
+# total_df['Hair'].value_counts().sort_index()
 
-# fillna padding
-total_df['Hair'].fillna(method='pad', inplace=True)
-# '0' as 'Unknown'
-total_df['Hair'] = total_df['Hair'].map(lambda hc: hc
-                                        if hc != '0' else 'Unknown')
-# TODO classification fill na / 0 value
+# # fillna padding
+# total_df['Hair'].fillna(method='pad', inplace=True)
+# # '0' as 'Unknown'
+# total_df['Hair'] = total_df['Hair'].map(lambda hc: hc
+#                                         if hc != '0' else 'Unknown')
+# # TODO classification fill na / 0 value
 
-# freq encoding
-fq_encode = total_df['Hair'].value_counts(normalize=True).to_dict()
-total_df['Hair_F'] = total_df['Hair'].map(fq_encode).astype('float32')
+# # freq encoding
+# fq_encode = total_df['Hair'].value_counts(normalize=True).to_dict()
+# total_df['Hair_F'] = total_df['Hair'].map(fq_encode).astype('float32')
 
-# one hot encoding
-dummies = pd.get_dummies(total_df['Hair'], prefix='Hair')
-total_df = total_df.join(dummies)
+# # one hot encoding
+# dummies = pd.get_dummies(total_df['Hair'], prefix='Hair')
+# total_df = total_df.join(dummies)
 
-# drop the original column
-total_df.drop('Hair', axis=1, inplace=True)
+# # drop the original column
+# total_df.drop('Hair', axis=1, inplace=True)
 
-total_df.columns
+# total_df.columns
 ########################################### Start with Hair
 """# Magical Timeblock Frequency Encoding (Division)
 
@@ -575,8 +575,7 @@ def create_cat_con(df, cats, cons, normalize=True):
 
 cats = [
     'Year_Resized_F', 'Year_B1990_F', 'Year_A1990_F', 'Housing_F', 'WorkExp_F',
-    'Satisfation_F', 'Gender_F', 'Age_F', 'Country_F', 'Profession_F', 'UD_F',
-    'Glasses_F', 'Hair_F'
+    'Satisfation_F', 'Gender_F', 'Age_F', 'Country_F', 'Profession_F', 'UD_F'
 ]
 cons = ['Crime_F', 'SoC_F', 'AddIn_F']
 
@@ -593,11 +592,14 @@ X_with_addin = X[X['AddIn'] > 0]
 X_without_addin = X[X['AddIn_0'] == 1]
 
 y_ttl = total_df[:t_row]
-y_with_addin = (y_ttl[y_ttl['AddIn'] > 0]['Income']).map(np.cbrt)
-y_without_addin = y_ttl[y_ttl['AddIn_0'] == 1]['Income'].map(np.cbrt)
+y_with_addin = (y_ttl[y_ttl['AddIn'] > 0]['Income']).map(lambda y: np.log(y+1))
+y_without_addin = y_ttl[y_ttl['AddIn_0'] == 1]['Income'].map(lambda y: np.log(y+1))
 
 # lgb parameters
 params = {
+    'application': 'tweedie',
+    'metric': 'tweedie',
+    'tweedie_variance_power': 1.5,
     'max_depth': 16,
     'num_leaves': 65536,
     'bagging_fraction': 1.0,
@@ -612,77 +614,77 @@ params = {
 
 # kfold with addin
 
-kfold = KFold(n_splits=5, random_state=None, shuffle=True)
-results_arr_with_addin = []
-iii = 0
-for train_index, test_index in kfold.split(X_with_addin):
-    print(iii, ':')
-    print("TRAIN:", train_index, "TEST:", test_index)
-    X_train, X_test = X_with_addin.values[train_index], X_with_addin.values[
-        test_index]
-    y_train, y_test = y_with_addin.values[train_index], y_with_addin.values[
-        test_index]
+# kfold = KFold(n_splits=5, random_state=None, shuffle=True)
+# results_arr_with_addin = []
+# iii = 0
+# for train_index, test_index in kfold.split(X_with_addin):
+#     print(iii, ':')
+#     print("TRAIN:", train_index, "TEST:", test_index)
+#     X_train, X_test = X_with_addin.values[train_index], X_with_addin.values[
+#         test_index]
+#     y_train, y_test = y_with_addin.values[train_index], y_with_addin.values[
+#         test_index]
 
-    # lgb OVERFLOWED
-    trn_data = lgb.Dataset(X_train, label=y_train)
-    val_data = lgb.Dataset(X_test, label=y_test)
-    model = lgb.train(params,
-                      trn_data,
-                      10000,
-                      valid_sets=[trn_data, val_data],
-                      verbose_eval=1000,
-                      early_stopping_rounds=300)
+#     # lgb OVERFLOWED
+#     trn_data = lgb.Dataset(X_train, label=y_train)
+#     val_data = lgb.Dataset(X_test, label=y_test)
+#     model = lgb.train(params,
+#                       trn_data,
+#                       10000,
+#                       valid_sets=[trn_data, val_data],
+#                       verbose_eval=1000,
+#                       early_stopping_rounds=300)
 
-    # simple linear
-    # model = LinearRegression()
-    # model.fit(X_train, y_train)
-    # score = model.score(X_test, y_test)
+#     # simple linear
+#     # model = LinearRegression()
+#     # model.fit(X_train, y_train)
+#     # score = model.score(X_test, y_test)
 
-    # calculate val
-    test_val = model.predict(X_test)
-    score = mean_absolute_error(y_test, test_val)
+#     # calculate val
+#     test_val = model.predict(X_test)
+#     score = mean_absolute_error(y_test, test_val)
 
-    print('score:')
-    print(score)
-    results_arr_with_addin.append((model, score))
-    iii += 1
+#     print('score:')
+#     print(score)
+#     results_arr_with_addin.append((model, score))
+#     iii += 1
 
-# kfold without addin
+# # kfold without addin
 
-kfold = KFold(n_splits=5, random_state=None, shuffle=True)
-results_arr_without_addin = []
-iii = 0
-for train_index, test_index in kfold.split(X_without_addin):
-    print(iii, ':')
-    print("TRAIN:", train_index, "TEST:", test_index)
-    X_train, X_test = X_without_addin.values[
-        train_index], X_without_addin.values[test_index]
-    y_train, y_test = y_without_addin.values[
-        train_index], y_without_addin.values[test_index]
+# kfold = KFold(n_splits=5, random_state=None, shuffle=True)
+# results_arr_without_addin = []
+# iii = 0
+# for train_index, test_index in kfold.split(X_without_addin):
+#     print(iii, ':')
+#     print("TRAIN:", train_index, "TEST:", test_index)
+#     X_train, X_test = X_without_addin.values[
+#         train_index], X_without_addin.values[test_index]
+#     y_train, y_test = y_without_addin.values[
+#         train_index], y_without_addin.values[test_index]
 
-    # lgb OVERFLOWED
-    trn_data = lgb.Dataset(X_train, label=y_train)
-    val_data = lgb.Dataset(X_test, label=y_test)
-    model = lgb.train(params,
-                      trn_data,
-                      100000,
-                      valid_sets=[trn_data, val_data],
-                      verbose_eval=1000,
-                      early_stopping_rounds=400)
+#     # lgb OVERFLOWED
+#     trn_data = lgb.Dataset(X_train, label=y_train)
+#     val_data = lgb.Dataset(X_test, label=y_test)
+#     model = lgb.train(params,
+#                       trn_data,
+#                       100000,
+#                       valid_sets=[trn_data, val_data],
+#                       verbose_eval=1000,
+#                       early_stopping_rounds=400)
 
-    # simple linear
-    # model = LinearRegression()
-    # model.fit(X_train, y_train)
-    # score = model.score(X_test, y_test)
+#     # simple linear
+#     # model = LinearRegression()
+#     # model.fit(X_train, y_train)
+#     # score = model.score(X_test, y_test)
 
-    # calculate val
-    test_val = model.predict(X_test)
-    score = mean_absolute_error(y_test, test_val)
+#     # calculate val
+#     test_val = model.predict(X_test)
+#     score = mean_absolute_error(y_test, test_val)
 
-    print('score:')
-    print(score)
-    results_arr_without_addin.append((model, score))
-    iii += 1
+#     print('score:')
+#     print(score)
+#     results_arr_without_addin.append((model, score))
+#     iii += 1
 """# Output Data"""
 
 # X_predict
@@ -692,23 +694,44 @@ Xp_with_addin = X_predict[X_predict['AddIn'] > 0]
 Xp_without_addin = X_predict[X_predict['AddIn_0'] == 1]
 
 # pick one result
-best_one, best_score = results_arr_with_addin[0]
-for sets in results_arr_with_addin:
-    m, s = sets
-    if s < best_score:
-        best_score = s
-        best_one = m
+# best_one, best_score = results_arr_with_addin[0]
+# for sets in results_arr_with_addin:
+#     m, s = sets
+#     if s < best_score:
+#         best_score = s
+#         best_one = m
 
-Xp_with_addin['Income'] = best_one.predict(Xp_with_addin)
+X_trainval,X_test,y_trainval,y_test = train_test_split(X_with_addin,y_with_addin,test_size=0.2, random_state=None)
+trn_data = lgb.Dataset(X_trainval, label=y_trainval)
+val_data = lgb.Dataset(X_test, label=y_test)
+modelXp_with_addin = lgb.train(params,
+                    trn_data,
+                    10000,
+                    valid_sets=[trn_data, val_data],
+                    verbose_eval=1000,
+                    early_stopping_rounds=300)
 
-best_one, best_score = results_arr_without_addin[0]
-for sets in results_arr_with_addin:
-    m, s = sets
-    if s < best_score:
-        best_score = s
-        best_one = m
+X_trainval,X_test,y_trainval,y_test = train_test_split(X_without_addin,y_without_addin,test_size=0.2, random_state=None)
+trn_data = lgb.Dataset(X_trainval, label=y_trainval)
+val_data = lgb.Dataset(X_test, label=y_test)
+modelXp_without_addin = lgb.train(params,
+                    trn_data,
+                    10000,
+                    valid_sets=[trn_data, val_data],
+                    verbose_eval=1000,
+                    early_stopping_rounds=300)
 
-Xp_without_addin['Income'] = best_one.predict(Xp_without_addin)
+
+Xp_with_addin['Income'] = modelXp_with_addin.predict(Xp_with_addin)
+
+# best_one, best_score = results_arr_without_addin[0]
+# for sets in results_arr_with_addin:
+#     m, s = sets
+#     if s < best_score:
+#         best_score = s
+#         best_one = m
+
+Xp_without_addin['Income'] = modelXp_without_addin.predict(Xp_without_addin)
 
 # concat and sort
 Xp_with_prediction = pd.concat([Xp_with_addin, Xp_without_addin])
@@ -718,7 +741,7 @@ sub_df = pd.DataFrame({
     'Instance':
     range(1, p_row + 1),
     'Total Yearly Income [EUR]':
-    Xp_with_prediction['Income'].map(lambda y: y**3)
+    Xp_with_prediction['Income'].map(lambda y: np.exp(y) - 1)
 })
 
 # write file

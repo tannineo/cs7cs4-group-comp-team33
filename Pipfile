@@ -2,11 +2,13 @@
 name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
+skip_lock = true
 
 [dev-packages]
 flake8 = "*"
 rope = "*"
 yapf = "*"
+pylint = "*"
 
 [packages]
 numpy = "*"
